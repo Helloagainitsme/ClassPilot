@@ -1,0 +1,29 @@
+{
+  "name": "classpilot-desktop",
+  "productName": "ClassPilot",
+  "version": "0.1.0",
+  "description": "Offline-first student competency and positioning tracking for teachers",
+  "private": true,
+  "author": "ClassPilot Project",
+  "license": "UNLICENSED",
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check main.cjs && node --check preload.cjs && node --check app/index.js && node --check app/login.js",
+    "build:win": "electron-builder --win nsis --x64",
+    "build:portable": "electron-builder --win portable --x64"
+  },
+  "devDependencies": {
+    "electron": "45.1.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "org.classpilot.desktop",
+    "productName": "ClassPilot",
+    "asar": true,
+    "directories": {"output": "dist"},
+    "files": ["main.cjs", "preload.cjs", "app/**/*", "package.json"],
+    "win": {"target": ["nsis"], "artifactName": "ClassPilot-Setup-${version}.${ext}"},
+    "nsis": {"oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true, "createStartMenuShortcut": true}
+  }
+}

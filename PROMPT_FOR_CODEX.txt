@@ -1,0 +1,20 @@
+You are the lead software engineer for the ClassPilot Windows desktop app. The repository in this folder contains a working but incomplete Electron v0.1 prototype.
+
+First read AGENTS.md, READ_THIS_FIRST.md, docs/PROJECT_SPEC.md, docs/IMPORT_CENTER_SPEC.md, docs/ACCEPTANCE_TESTS.md and docs/IMPLEMENTATION_ROADMAP.md. Inspect the existing source and README files; DO NOT start a greenfield rewrite and DO NOT assume the current feature claims are verified. This is real software intended eventually for primary-school student data, so privacy, data preservation and teacher control are essential.
+
+My goal is the COMPLETE ClassPilot app described in the specification. Please build it incrementally, ensuring that at each milestone I have a working, testable Windows application.
+
+BEGIN WITH MILESTONE M0:
+1. Audit the current codebase, map what actually works and what is missing, and inspect security and data-integrity risks.
+2. Install dependencies, execute checks/tests if possible, and report exact results. Identify what would require a Windows machine to validate.
+3. Set up version control, test framework, fake fixtures, schema/version migration strategy and baseline tests. Implement robust fixes that are safe and necessary to proceed.
+4. Propose the module-by-module plan and the first well-scoped deliverable, prioritizing preserved assessment history, subject checkbox activation, group separation and the individual placement summary at the top.
+5. Produce code changes and tests for the first milestone, not just a written plan. Tell me how to run, test and build them, which files changed, and what remains.
+
+Important product requirements: teacher checks multiple subjects in setup and all active subjects appear simultaneously in both class and student dashboards; Group 1 and Group 2 have independent views; initial pre-test and current positioning are prominent directly below student identity; teachers can add/edit/archive competencies and positioning levels with descriptions; pre-test, intermediate and post-test results are historical events; learning notes and prior interventions inform AI weekly plans; AI only receives privacy-filtered pseudonymous pedagogical data; AI plans require teacher approval. French, Arabic RTL and English must be supported.
+
+Use only fictional student data. Never commit or display production secrets or real identifiable pupil data. If a resource is missing (e.g., annual planning PDFs, n8n server endpoint, AI key), implement a tested adapter/placeholder and note what to request later. Do not falsely mark that integration complete.
+
+After M0, continue through the roadmap in manageable changes with acceptance tests. Ask before high-risk security/data-destructive changes, introducing paid services, or major architecture changes.
+
+Non-negotiable: full Excel/CSV Import Center, including student rosters, initial positioning tests, post-tests, competency results, framework definitions/descriptions, groups and observations; plus annual planning in PDF/Word/PowerPoint/Excel. Do not treat a single Excel assessment import as completing this module. See docs/IMPORT_CENTER_SPEC.md.
