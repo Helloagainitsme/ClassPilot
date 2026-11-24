@@ -45,13 +45,16 @@ Alternatively, upload the project folder to a GitHub repository and run the work
 
 ## Data security and limitations
 
-- The local records are stored in a SQLite database as a single encrypted AES-256-GCM vault; password-derived keys use scrypt. This is encrypted **at rest**, not end-to-end synchronization.
+- Local records and backend-generated change history share one AES-256-GCM encrypted envelope in SQLite; password-derived keys use scrypt. SQLite contains only ciphertext and format metadata. This is encryption **at rest**, not synchronization.
+- On authenticated unlock, supported old workspaces are migrated into a fresh encrypted database. Legacy audit/framework/event rows are retained inside an encrypted archive. An encrypted recovery snapshot is kept beside the vault. See [storage and recovery instructions](docs/M0_1_STORAGE.md).
+- Restore asks for the backup's own password and validates it before replacing the current workspace. Successful restore requires signing in with that password. Earlier application builds cannot open the new authenticated format.
 - Passwords are **not recoverable**. Backups are encrypted but require the original vault password (or the password belonging to the restored vault).
 - There is **no external AI network connection**, no n8n sync, and no cloud processing in this build.
 - Please do not enter actual students' personal information until your institution has approved the software's use and the applicable privacy/security requirements have been checked. This is not yet security-audited software.
 - Student enrollment imports from XLSX, curricular PDF/PPTX imports, student work attachments, rich historic competency event logs, schedule-driven weekly plans, and real AI/n8n integration are **not yet built**.
 - There is no automatic software updater, multi-user permission management, mass file importer, or formally verified encrypted sync.
-- A competency status in v0.1 is the current status only; unlike assessments, **changes to competency status are not yet event-sourced as a complete history**. This must be added before production use.
+- Backend change history now preserves committed competency/status and definition changes, together with their saved state. **Immutable framework versions, a history browser, and audited assessment corrections remain unfinished.** Current charts still use mutable level definitions; historical comparison work remains necessary.
+- Old exports and backups created by earlier versions may contain plaintext audit data. Upgrading does not rewrite those separate files or guarantee forensic erasure of filesystem/SSD remnants. Keep them private; follow your institution's retention process.
 - Some translations, particularly newly added bulk entry and security controls, are not yet fully localized.
 - The current student identity field stores one local Massar ID, but external AI is disabled and must never be given those fields in later versions.
 - The app has not been tested as a packaged Windows installer in this environment. Build and installation are provided as reproducible steps.
@@ -71,6 +74,8 @@ Alternatively, upload the project folder to a GitHub repository and run the work
 npm install
 npm start
 npm run check
+npm test
+npm run test:legacy
 npm run build:win
 ```
 

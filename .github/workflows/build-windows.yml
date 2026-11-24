@@ -5,8 +5,11 @@ on:
     branches: [main]
     paths:
       - 'package.json'
+      - 'package-lock.json'
       - 'main.cjs'
       - 'preload.cjs'
+      - 'lib/**'
+      - 'tests/**'
       - 'app/**'
       - '.github/workflows/build-windows.yml'
 jobs:
@@ -21,9 +24,11 @@ jobs:
           node-version: '24'
       - name: Install dependencies
         shell: pwsh
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
       - name: Check JavaScript syntax
         run: npm run check
+      - name: Test storage and renderer regressions
+        run: npm test
       - name: Build Windows .exe
         run: npm run build:win
         env:

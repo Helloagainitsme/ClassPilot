@@ -1,5 +1,19 @@
 # ClassPilot — Architectural and Engineering Decisions
 
+## 2026-11-24: M0.1 confidential persistence and recovery
+
+The independent audit invalidated the earlier assumption that educational audit payloads were non-sensitive metadata. Full assessment and observation JSON was stored in plaintext SQL. The earlier versioning description below was a design intention, not an implemented immutable framework model.
+
+Keep the encrypted vault as the single live authority for this bounded milestone. Format 2 stores `{data, audit, legacyTables}` inside one AES-GCM authenticated envelope. Backend-generated deltas and the official state commit in one revision-checked SQLite update/transaction. This avoids an unsynchronized second data store and independently failing renderer log writes. The size limit includes retained history; no silent trimming.
+
+Legacy SQL audit/framework/event/link rows are preserved as encrypted source archives. Migration and backup rebuild fresh two-table databases rather than copy old plaintext pages. Candidate restores are validated read-only and authenticated with their own password before staged replacement; an encrypted pre-change recovery is retained, with rollback on replacement/reopen failures. Existing separate legacy copies are not automatically deleted, and forensic SSD/filesystem erasure is not claimed.
+
+Format-specific GCM additional authenticated data prevents old executables from decrypting the new document and silently replacing it through their legacy fallback. Future format versions and unknown schemas are rejected. Exact document/main-frame IPC and expected revisions protect the current single-workspace boundary; teacher/class/year scope and immutable framework versions remain separate milestones.
+
+No new dependencies or renderer framework migration. Tests import actual production storage, and execute actual renderer/main IPC code with scoped doubles. These tests do not replace real Windows UI, packaging, power-loss or independent security verification. See `M0_1_STORAGE.md` for operating and recovery instructions.
+
+## Historical decisions below — superseded where noted
+
 ## 2026-11-18: Implementation of Milestone 1 Core
 
 ### Decision: Relational Schema vs. Encrypted Blob

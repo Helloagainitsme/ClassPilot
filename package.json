@@ -9,7 +9,9 @@
   "main": "main.cjs",
   "scripts": {
     "start": "electron .",
-    "check": "node --check main.cjs && node --check preload.cjs && node --check app/index.js && node --check app/login.js",
+    "check": "node --check main.cjs && node --check preload.cjs && node --check lib/workspace.cjs && node --check lib/vault-store.cjs && node --check app/index.js && node --check app/login.js",
+    "test": "node --test tests/*.test.cjs",
+    "test:legacy": "node tests/milestone1.test.js && node tests/migration_test.js",
     "build:win": "electron-builder --win nsis --x64",
     "build:portable": "electron-builder --win portable --x64"
   },
@@ -22,7 +24,7 @@
     "productName": "ClassPilot",
     "asar": true,
     "directories": {"output": "dist"},
-    "files": ["main.cjs", "preload.cjs", "app/**/*", "package.json"],
+    "files": ["main.cjs", "preload.cjs", "lib/**/*.cjs", "app/**/*", "package.json"],
     "win": {"target": ["nsis"], "artifactName": "ClassPilot-Setup-${version}.${ext}"},
     "nsis": {"oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true, "createStartMenuShortcut": true}
   }
